@@ -144,14 +144,14 @@ CB_1000=conc_sol_1000.y[1]
 CC_1000=conc_sol_1000.y[2]
 
 # Case 4:
-k2_inf  = np.inf     #[1/s]
-k_2_inf = np.inf    #[1/s]
-k_inf = [k1, k_1, k2_1000, k_2_1000]
+k2_10000  = 10000     #[1/s]
+k_2_10000 = 10000     #[1/s]
+k_10000 = [k1, k_1, k2_10000, k_2_10000]
 
-conc_sol_inf = solve_ivp(series_reactions_batch, [0, t[-1]], c_ini, t_eval=t, method='Radau', args=[k_inf])
-CA_inf=conc_sol_inf.y[0]
-CB_inf=conc_sol_inf.y[1]
-CC_inf=conc_sol_inf.y[2]
+conc_sol_10000 = solve_ivp(series_reactions_batch, [0, t[-1]], c_ini, t_eval=t, method='Radau', args=[k_10000])
+CA_10000=conc_sol_10000.y[0]
+CB_10000=conc_sol_10000.y[1]
+CC_10000=conc_sol_10000.y[2]
 
 
 # Plotting Results:
@@ -196,9 +196,9 @@ axs[1,0].legend(loc='upper right',shadow='True',fontsize=14)
 axs[1,1].plot(t,CA,'k-',label='A| k$_2$ = k$_{-2}$ = 1')
 axs[1,1].plot(t,CB,'r-',label='B| k$_2$ = k$_{-2}$ = 1')
 axs[1,1].plot(t,CC,'g-',label='C| k$_2$ = k$_{-2}$ = 1')
-axs[1,1].plot(t,CA_inf,'k--',label='A| k$_2$ = k$_{-2}$ = $\infty$')
-axs[1,1].plot(t,CB_inf,'r--',label='B| k$_2$ = k$_{-2}$ = $\infty$')
-axs[1,1].plot(t,CC_inf,'g--',label='C| k$_2$ = k$_{-2}$ = $\infty$')
+axs[1,1].plot(t,CA_10000,'k--',label='A| k$_2$ = k$_{-2}$ = 10000')
+axs[1,1].plot(t,CB_10000,'r--',label='B| k$_2$ = k$_{-2}$ = 10000')
+axs[1,1].plot(t,CC_10000,'g--',label='C| k$_2$ = k$_{-2}$ = 10000')
 axs[1,1].set_xlabel('Time [s]',fontsize = 20)
 axs[1,1].set_ylabel('Concentration [mol/L]',fontsize = 20)
 axs[1,1].set_title('k$_2$ = k$_{-2}$ = $\infty$',fontsize = 20)
