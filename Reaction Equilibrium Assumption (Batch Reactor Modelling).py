@@ -233,6 +233,7 @@ def series_reactions_batch_REA(t,c_ini,k):
 # Equilibrium constant of reaction B <-> C:
 K2  = 1  #k2/k-2
 
+# Defining new reaction rate constant vector:
 k = [k1, k_1, K2]
 
 # Defining new intial concentrations:
@@ -241,6 +242,7 @@ CBs = (1/(1+K2))*(CB0+CC0)
 CCs = (K2/(1+K2))*(CB0+CC0)
 c_ini = [CA0, CBs, CCs]
 
+# Solving the ODE reaction model describing the reaction series
 conc_sol_REA = solve_ivp(series_reactions_batch_REA, [0, t[-1]], c_ini, t_eval=t, method='Radau', args=[k])
 CA_REA=conc_sol_REA.y[0]
 CB_REA=conc_sol_REA.y[1]
