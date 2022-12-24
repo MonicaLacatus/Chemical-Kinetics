@@ -194,6 +194,63 @@ axs[1,1].grid(True, color = "grey", linewidth = "1.0", linestyle = "-")
 axs[1,1].legend(loc='upper right',shadow='True',fontsize=14)   
 plt.show()
 
+#----------------------------------------------------------------------------------------------------
+#          Part 3 : Applying QSSA Approximation to Obtain Simplified ODE Reaction Model
+#----------------------------------------------------------------------------------------------------
 
+def series_reactions_batch_QSSA(t,c_ini,k):
+    
+    # Batch reactor component species balances obtained using QSSA approximation
+    
+   CA = c_ini[0]
+   CB = c_ini[1]
+   CC = c_ini[2] 
+   
+   k1  = k[0] 
+   k2  = k[1] 
+   
+   r1 = k1*CA 
+   r2 = 0
+   
+   dCAdt = -r1
+   dCBdt = 0
+   dCCdt = r1
+   
+   return [dCAdt,dCBdt,dCCdt]
 
+# Solving the ODE reaction model describing the reaction series:
+conc_sol_QSSA = solve_ivp(series_reactions_batch_QSSA, [0, t[-1]], c_ini, t_eval=t, method='Radau', args=[k])
+CA_QSSA=conc_sol_QSSA.y[0]
+CB_QSSA=conc_sol_QSSA.y[1]
+CC_QSSA=conc_sol_QSSA.y[2]
 
+# Plotting Results:
+fig = plt.figure(figsize=(9,6))
+plt.plot(t,CA_QSSA,'k',label='A')
+plt.plot(t,CB_QSSA,'r',label='B')
+plt.plot(t,CC_QSSA,'g',label='C')
+plt.xlabel('Time [s]')
+plt.ylabel('Concentration [mol/L]')
+plt.title('Concentration Evolution of Species in Batch Reactor (QSSA Approximation)',fontsize = 15)
+plt.grid(True, color = "grey", linewidth = "1.0", linestyle = "-")
+plt.legend(loc='center right',shadow='True',fontsize=14)
+plt.show()
+
+#----------------------------------------------------------------------------------------------------
+#               Part 4 : Comparison of QSSA Approximation to Full Reaction Model
+#----------------------------------------------------------------------------------------------------
+
+# Plotting Comparison:
+fig = plt.figure(figsize=(9,6))
+plt.plot(t,CA_QSSA,'k',label='A| REA approx.')
+plt.plot(t,CB_QSSA,'r',label='B| REA approx.')
+plt.plot(t,CC_QSSA,'g',label='C| REA approx.')
+plt.plot(t,CA_10,'k--',label='A| k$_2$ = k$_{2}$ = 10')
+plt.plot(t,CB_10,'r--',label='B| k$_2$ = k$_{2}$ = 10')
+plt.plot(t,CC_10,'g--',label='C| k$_2$ = k$_{2}$ = 10')
+plt.xlabel('Time [s]')
+plt.ylabel('Concentration [mol/L]')
+plt.title('Comparison of QSSA Approximation to Full Reaction Model',fontsize = 15)
+plt.grid(True, color = "grey", linewidth = "1.0", linestyle = "-")
+plt.legend(loc='upper right',shadow='True',fontsize=12)
+plt.show()
